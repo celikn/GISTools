@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #------------------------------------------------------------------------------
 #% Programmed by ncelik                                        *****
-#% *****     2014(TP)                                             *****
+#% *****     2014(TPAO)                                             *****
 #% *****     Latest update as of 27/01/2016                         *****
 #% *****                                                            *****
 #% *****                                                            *****
@@ -44,6 +44,8 @@ def clipLayerswExtent():
     df = arcpy.mapping.ListDataFrames(mxd,"*")[0]
     mdxpath=mxd.filePath
     arcpy.env.workspace=os.path.split(mdxpath)[0]
+    #Defines CS of Polygon          
+    CoordinateSystem=df.spatialReference  ## Gets data frame coordinate system
     
     #Copy users initiated drawingArea to shp file 
     #--------------------------------------------------------------------------
@@ -72,8 +74,7 @@ def clipLayerswExtent():
         array.add(array.getObject(0))
         extentpoly=arcpy.Polygon(array)
         
-        #Defines CS of Polygon          
-        CoordinateSystem=df.spatialReference  ## Gets data frame coordinate system
+        
         if extentCoordinateIsNotSameAsDataFrame=="true" :
             arcpy.DefineProjection_management(extentpoly,CoordinateSystem)
             arcpy.CopyFeatures_management(extentpoly,"extent.shp")
@@ -102,7 +103,7 @@ def clipLayerswExtent():
                 arcpy.AddMessage(CoordinateSystem.name)
                 #arcpy.Project_management(extent, CoordinateSystem)    
     
-                ###!!!!!ADD here projecting the extent values to  the layer coordinate
+                ###ADD here projecting the extent values to  the layer coordinate
         arcpy.AddMessage(clipMethod)
         if clipMethod=="Area_Extent":
     
@@ -146,4 +147,5 @@ def clipLayerswExtent():
 
 if __name__ == '__main__':
     clipLayerswExtent()
+
 
